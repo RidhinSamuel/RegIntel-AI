@@ -1,0 +1,19 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "description": "This will be the main folder for frontend in this project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RidhinSamuel/RegIntel-AI.git"
+  },
+  "author": "Ridhin Samuel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RidhinSamuel/RegIntel-AI/issues"
+  },
+  "homepage": "https://github.com/RidhinSamuel/RegIntel-AI#readme"
+}
