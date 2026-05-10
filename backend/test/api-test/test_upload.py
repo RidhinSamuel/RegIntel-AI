@@ -1,9 +1,6 @@
 from io import BytesIO
-
 # from fastapi import FastAPI
 from fastapi.testclient import TestClient
-
-from app.api.routes import upload_router
 from app.main import app
 client = TestClient(app)
 
