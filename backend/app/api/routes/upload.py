@@ -4,19 +4,30 @@ from app.models.response import UploadResponse
 
 upload_router = APIRouter()
 
-@upload_router.post("/upload",status_code=status.HTTP_200_OK,response_model=UploadResponse)
-def get_pdf_file_from_user(file:UploadFile = File(...)):
+
+@upload_router.post(
+    "/upload", status_code=status.HTTP_200_OK, response_model=UploadResponse
+)
+def get_pdf_file_from_user(file: UploadFile = File(...)):
+    """
+    This Python function receives a PDF file from a user, saves it as a document, and returns a success
+    message or raises an exception for an invalid file type.
+
+    :param file: The `file` parameter in the `get_pdf_file_from_user` function is of type `UploadFile`,
+    which is a special class provided by FastAPI for handling file uploads. This parameter represents
+    the file that the user is uploading through the API endpoint. The `File(...)` in the function
+    signature
+    :type file: UploadFile
+    :return: The `get_pdf_file_from_user` function is returning an `UploadResponse` object with a
+    success status and a message. If the document is successfully saved, the `UploadResponse` object
+    will have `success=True` and the message returned by the `save_document` function. If an error
+    occurs during the process, a `HTTPException` will be raised with a status code of 415 (
+    """
     try:
         message = save_documents.save_document(file)
-        return UploadResponse(
-            success= True,
-            message = message
-        )
+        return UploadResponse(success=True, message=message)
     except ValueError as error:
         raise HTTPException(
             status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
-            detail={
-                "code": "INVALID_FILE_TYPE",
-                "message": str(error)
-            }
+            detail={"code": "INVALID_FILE_TYPE", "message": str(error)},
         )
