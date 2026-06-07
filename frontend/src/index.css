@@ -1,0 +1,137 @@
+/* =========================================================
+   RegAI — Global Design System
+   Linear.app inspired: clean, white, premium
+   ========================================================= */
+
+/* --- CSS Variables (Design Tokens) --- */
+:root {
+  /* Colors — Light Mode */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f9f9f9;
+  --bg-tertiary: #f3f3f3;
+  --bg-card: #ffffff;
+
+  --text-primary: #0a0a0a;
+  --text-secondary: #4a4a4a;
+  --text-muted: #8a8a8a;
+
+  --border-subtle: #e8e8e8;
+  --border-default: #d4d4d4;
+
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --accent-fg: #ffffff;
+
+  --blue: #2563eb;
+  --blue-light: #60a5fa;
+  --blue-muted: #dbeafe;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06), 0 2px 6px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 24px 64px rgba(0, 0, 0, 0.10), 0 8px 24px rgba(0, 0, 0, 0.06);
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  --transition: 0.2s ease;
+  --transition-slow: 0.4s ease;
+
+  /* Overlay */
+  --overlay-bg: rgba(0, 0, 0, 0.4);
+}
+
+/* --- Dark Mode Tokens --- */
+[data-theme="dark"] {
+  --bg-primary: #0c0c0c;
+  --bg-secondary: #141414;
+  --bg-tertiary: #1c1c1c;
+  --bg-card: #161616;
+
+  --text-primary: #f0f0f0;
+  --text-secondary: #a0a0a0;
+  --text-muted: #606060;
+
+  --border-subtle: #242424;
+  --border-default: #303030;
+
+  --accent: #3b82f6;
+  --accent-hover: #2563eb;
+  --accent-fg: #ffffff;
+
+  --blue: #3b82f6;
+  --blue-light: #93c5fd;
+  --blue-muted: #1e3a5f;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 24px 64px rgba(0, 0, 0, 0.6);
+
+  --overlay-bg: rgba(0, 0, 0, 0.7);
+}
+
+/* --- Reset & Base --- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+html.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color var(--transition-slow), color var(--transition-slow);
+  overflow-x: hidden;
+}
+
+/* --- Typography --- */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+p {
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+  border: none;
+  outline: none;
+}
+
+/* --- Scrollbar --- */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-default);
+  border-radius: 3px;
+}

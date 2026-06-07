@@ -1,0 +1,80 @@
+/* =========================================================
+   CTA Section — "Try RegAI" full-width call to action
+   ========================================================= */
+.cta-section {
+  padding: 120px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.cta-section__inner {
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  animation: cta-fade-in 0.7s ease both;
+}
+
+.cta-section__label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.cta-section__title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--text-primary);
+  line-height: 1.1;
+}
+
+.cta-section__description {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 440px;
+}
+
+.cta-section__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 32px;
+  border-radius: var(--radius-md);
+  background: var(--accent);
+  color: var(--bg-primary);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.cta-section__btn:hover {
+  opacity: 0.82;
+  transform: translateY(-3px);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.16);
+}
+
+.cta-section__btn:active {
+  transform: translateY(-1px);
+}
+
+@keyframes cta-fade-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 600px) {
+  .cta-section {
+    padding: 80px 24px;
+  }
+}
