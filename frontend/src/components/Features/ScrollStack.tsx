@@ -60,6 +60,7 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
 
   // Cached positions to prevent layout thrashing (getBoundingClientRect / offsetTop) on scroll
   const cardTopsRef = useRef<number[]>([]);
+  const cardHeightsRef = useRef<number[]>([]);
   const endElementTopRef = useRef<number>(0);
 
   const calculateProgress = useCallback((scrollTop: number, start: number, end: number) => {
@@ -107,11 +108,14 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
 
     // 2. Measure layout positions
     const newCardTops: number[] = [];
+    const newCardHeights: number[] = [];
     cardsRef.current.forEach(card => {
       if (!card) {
         newCardTops.push(0);
+        newCardHeights.push(0);
         return;
       }
+      newCardHeights.push(card.offsetHeight || 0);
       if (useWindowScroll) {
         const rect = card.getBoundingClientRect();
         newCardTops.push(rect.top + window.scrollY);
@@ -143,6 +147,7 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
     });
 
     cardTopsRef.current = newCardTops;
+    cardHeightsRef.current = newCardHeights;
     endElementTopRef.current = newEndElementTop;
   }, [useWindowScroll]);
 
@@ -158,6 +163,10 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
     const scaleEndPositionPx = parsePercentage(scaleEndPosition, containerHeight);
     const endElementTop = endElementTopRef.current;
 
+    const lastCardIndex = cardsRef.current.length - 1;
+    const lastCardHeight = cardHeightsRef.current[lastCardIndex] || 460;
+    const pinEndValue = endElementTop - lastCardHeight - stackPositionPx - itemStackDistance * lastCardIndex;
+
     cardsRef.current.forEach((card, i) => {
       if (!card) return;
 
@@ -165,7 +174,7 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
       const triggerStart = cardTop - stackPositionPx - itemStackDistance * i;
       const triggerEnd = cardTop - scaleEndPositionPx;
       const pinStart = cardTop - stackPositionPx - itemStackDistance * i;
-      const pinEnd = endElementTop - containerHeight / 2;
+      const pinEnd = Math.max(pinStart, pinEndValue);
 
       const scaleProgress = calculateProgress(scrollTop, triggerStart, triggerEnd);
       const targetScale = baseScale + i * itemScale;

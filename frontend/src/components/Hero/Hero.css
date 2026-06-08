@@ -84,9 +84,11 @@
 
 .hero__title-spark {
   color: var(--blue);
-  font-size: 1.5rem;
-  vertical-align: super;
-  margin-left: 4px;
+  font-size: 2.3rem;
+  vertical-align: top;
+  position: relative;
+  top: -8px;
+  margin-left: 6px;
   display: inline-block;
   animation: spark-pop 2.5s ease-in-out infinite;
 }

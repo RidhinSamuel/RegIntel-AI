@@ -39,9 +39,11 @@
 
 .navbar__logo-spark {
   color: var(--blue);
-  font-size: 0.6rem;
-  vertical-align: super;
-  margin-left: 1px;
+  font-size: 0.95rem;
+  vertical-align: top;
+  position: relative;
+  top: -2px;
+  margin-left: 2px;
   display: inline-block;
   animation: spark-pop 2.5s ease-in-out infinite;
 }
