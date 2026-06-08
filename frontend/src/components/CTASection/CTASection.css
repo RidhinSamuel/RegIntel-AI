@@ -1,5 +1,5 @@
 /* =========================================================
-   CTA Section — "Try RegAI" full-width call to action
+   CTA Section — Scroll-Triggered Typing Animation
    ========================================================= */
 .cta-section {
   padding: 120px 48px;
@@ -15,32 +15,77 @@
   flex-direction: column;
   align-items: center;
   gap: 24px;
-  animation: cta-fade-in 0.7s ease both;
 }
 
+/* --- Label fade-in --- */
 .cta-section__label {
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--text-muted);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
+.cta-section__label--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* --- Title --- */
 .cta-section__title {
   font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 800;
   letter-spacing: -0.04em;
   color: var(--text-primary);
   line-height: 1.1;
+  min-height: 2.4em;
 }
 
+/* --- Description --- */
 .cta-section__description {
   font-size: 1rem;
   color: var(--text-secondary);
   line-height: 1.7;
   max-width: 440px;
+  min-height: 3.5em;
 }
 
+/* --- Typed text vs hidden text --- */
+.cta-typed {
+  color: inherit;
+}
+
+.cta-hidden {
+  color: transparent;
+  user-select: none;
+}
+
+/* --- Blinking cursor --- */
+.cta-cursor {
+  display: inline-block;
+  width: 3px;
+  height: 1.1em;
+  background: var(--blue);
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: cta-blink 0.6s step-end infinite;
+  border-radius: 2px;
+}
+
+.cta-cursor--small {
+  width: 2px;
+  height: 0.95em;
+}
+
+@keyframes cta-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* --- Button fade-in --- */
 .cta-section__btn {
   display: inline-flex;
   align-items: center;
@@ -56,6 +101,17 @@
   border: none;
   cursor: pointer;
   margin-top: 8px;
+  /* Initially hidden */
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+}
+
+.cta-section__btn--visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.2s ease;
 }
 
 .cta-section__btn:hover {
@@ -68,11 +124,7 @@
   transform: translateY(-1px);
 }
 
-@keyframes cta-fade-in {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
+/* --- Responsive --- */
 @media (max-width: 600px) {
   .cta-section {
     padding: 80px 24px;

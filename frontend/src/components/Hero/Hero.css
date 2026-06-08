@@ -1,6 +1,6 @@
 /* =========================================================
    Hero Section — co-located styles
-   Split layout: LEFT content | RIGHT abstract visual
+   Split layout: LEFT content | RIGHT glassmorphism visual
    ========================================================= */
 .hero {
   min-height: 100vh;
@@ -8,6 +8,7 @@
   align-items: center;
   padding: 96px 48px 64px;
   overflow: hidden;
+  position: relative;
 }
 
 .hero__inner {
@@ -20,12 +21,49 @@
   align-items: center;
 }
 
-/* --- Left: Content --- */
+/* ==========================================================
+   LEFT: Content — Mouse Spotlight Text Effect
+   ========================================================== */
 .hero__content {
   display: flex;
   flex-direction: column;
   gap: 24px;
   animation: hero-fade-in 0.8s ease forwards;
+  position: relative;
+  /* CSS custom properties set by JS */
+  --spotlight-x: 50%;
+  --spotlight-y: 50%;
+  --spotlight-opacity: 0;
+}
+
+/* The radial gradient spotlight that follows the cursor */
+.hero__spotlight {
+  position: absolute;
+  inset: -40px;
+  pointer-events: none;
+  z-index: 0;
+  border-radius: 24px;
+  background: radial-gradient(
+    320px circle at var(--spotlight-x) var(--spotlight-y),
+    rgba(37, 99, 235, 0.08) 0%,
+    transparent 100%
+  );
+  opacity: var(--spotlight-opacity);
+  transition: opacity 0.4s ease;
+}
+
+[data-theme="dark"] .hero__spotlight {
+  background: radial-gradient(
+    320px circle at var(--spotlight-x) var(--spotlight-y),
+    rgba(59, 130, 246, 0.12) 0%,
+    transparent 100%
+  );
+}
+
+/* Ensure content stacks above the spotlight overlay */
+.hero__content > *:not(.hero__spotlight) {
+  position: relative;
+  z-index: 1;
 }
 
 .hero__badge {
@@ -161,19 +199,108 @@
   letter-spacing: 0.02em;
 }
 
-/* --- Right: Abstract Geometric Visual --- */
+/* ==========================================================
+   RIGHT: Glassmorphism Visual Panel
+   ========================================================== */
 .hero__visual {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   animation: hero-fade-in 0.8s ease 0.2s both;
+  min-height: 420px;
+}
+
+/* --- Decorative Gradient Blobs --- */
+.hero__blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.6;
+  animation: blob-drift 12s ease-in-out infinite alternate;
+}
+
+.hero__blob--1 {
+  width: 260px;
+  height: 260px;
+  background: linear-gradient(135deg, #3b82f6 0%, #818cf8 100%);
+  top: -30px;
+  right: -20px;
+  animation-delay: 0s;
+}
+
+.hero__blob--2 {
+  width: 200px;
+  height: 200px;
+  background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+  bottom: -20px;
+  left: -10px;
+  animation-delay: -4s;
+}
+
+.hero__blob--3 {
+  width: 140px;
+  height: 140px;
+  background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+  top: 40%;
+  left: 50%;
+  transform: translateX(-50%);
+  animation-delay: -8s;
+}
+
+@keyframes blob-drift {
+  0% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(10px, -15px) scale(1.05); }
+  66% { transform: translate(-8px, 8px) scale(0.95); }
+  100% { transform: translate(5px, -5px) scale(1.02); }
+}
+
+/* --- The Glass Card --- */
+.hero__glass-panel {
+  position: relative;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 28px;
+  padding: 24px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hero__glass-panel:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow:
+    0 16px 48px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+[data-theme="dark"] .hero__glass-panel {
+  background: rgba(20, 20, 20, 0.4);
+  border-color: rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .hero__glass-panel:hover {
+  box-shadow:
+    0 16px 48px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] .hero__blob {
+  opacity: 0.35;
 }
 
 .hero__visual-svg {
   width: 100%;
-  max-width: 480px;
+  max-width: 420px;
   height: auto;
+  display: block;
 }
 
 /* Grid lines in visual */
@@ -262,4 +389,3 @@
   .hero__stats { justify-content: center; }
   .hero__visual { display: none; }
 }
-
