@@ -1,9 +1,9 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException, status
-from app.services import save_documents
+from app.services import save_documents,worker
+from app.services.queue import rq_queue
 from app.models.response import UploadResponse
 
 upload_router = APIRouter()
-
 
 @upload_router.post(
     "/upload", status_code=status.HTTP_200_OK, response_model=UploadResponse
@@ -25,6 +25,7 @@ def get_pdf_file_from_user(file: UploadFile = File(...)):
     """
     try:
         message = save_documents.save_document(file)
+        rq_queue.enqueue(worker.run_document_injection)
         return UploadResponse(success=True, message=message)
     except ValueError as error:
         raise HTTPException(

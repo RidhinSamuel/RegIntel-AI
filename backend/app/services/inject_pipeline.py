@@ -5,9 +5,7 @@ from langchain_community.document_loaders import PyMuPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_huggingface.embeddings import HuggingFaceEndpointEmbeddings
 from langchain_qdrant import QdrantVectorStore
-# from app.core.config import PDF_STORAGE_DIR
-from dotenv import load_dotenv
-load_dotenv()
+
 class MultiDocumentLoader:
     def __init__(self,document_path):
         self.document_path = document_path
@@ -30,6 +28,7 @@ class MultiDocumentLoader:
             file_path = os.path.join(self.document_path, filename)
             loader=self._create_loader(file_path)
             doc = loader.load()
+            doc.metadata['user_id']=1  # will add later after craeting session give session value to it
             print(type(doc))
             text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=400)
             chunks = text_splitter.split_documents(documents=doc)
@@ -42,7 +41,4 @@ class MultiDocumentLoader:
                             embedding=self.embedding_model,
                             url=os.environ["QDRANT"],
                             collection_name = "Reginter-Ai")
-PDF_STORAGE_DIR=os.getenv("PDF_STORAGE_DIR")
-print(PDF_STORAGE_DIR)
-load = MultiDocumentLoader(PDF_STORAGE_DIR)
-load.load()
+
