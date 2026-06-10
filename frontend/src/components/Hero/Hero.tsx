@@ -1,4 +1,4 @@
-import { useRef, useCallback, type JSX } from "react";
+import { useRef, useCallback, useEffect, useState, type JSX } from "react";
 import "./Hero.css";
 
 interface HeroProps {
@@ -6,10 +6,35 @@ interface HeroProps {
 }
 
 export default function Hero({ onTryClick }: HeroProps): JSX.Element {
-  const contentRef = useRef<HTMLDivElement>(null);
+  const heroRef = useRef<HTMLElement>(null);
+  const [chatStep, setChatStep] = useState(0);
 
-  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    const el = contentRef.current;
+  useEffect(() => {
+    // Phase 0: User message slides in
+    // Phase 1: Retrieval searches (after 1.2s)
+    // Phase 2: Typing indicator shown (after 2s)
+    // Phase 3: Bot answer appears (after 3.8s)
+    const timers = [
+      setTimeout(() => setChatStep(1), 1200),
+      setTimeout(() => setChatStep(2), 2000),
+      setTimeout(() => setChatStep(3), 3800),
+    ];
+
+    const interval = setInterval(() => {
+      setChatStep(0);
+      timers[0] = setTimeout(() => setChatStep(1), 1200);
+      timers[1] = setTimeout(() => setChatStep(2), 2000);
+      timers[2] = setTimeout(() => setChatStep(3), 3800);
+    }, 9000);
+
+    return () => {
+      timers.forEach(clearTimeout);
+      clearInterval(interval);
+    };
+  }, []);
+
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLElement>) => {
+    const el = heroRef.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -20,24 +45,27 @@ export default function Hero({ onTryClick }: HeroProps): JSX.Element {
   }, []);
 
   const handleMouseLeave = useCallback(() => {
-    const el = contentRef.current;
+    const el = heroRef.current;
     if (!el) return;
     el.style.setProperty("--spotlight-opacity", "0");
   }, []);
 
   return (
-    <section className="hero" id="hero" aria-labelledby="hero-title">
+    <section
+      className="hero"
+      id="hero"
+      aria-labelledby="hero-title"
+      ref={heroRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+    >
+      {/* Spotlight glow overlay */}
+      <div className="hero__spotlight" aria-hidden="true" />
+
       <div className="hero__inner">
 
-        {/* ── LEFT: Content with mouse spotlight ── */}
-        <div
-          className="hero__content"
-          ref={contentRef}
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
-        >
-          {/* Spotlight glow overlay */}
-          <div className="hero__spotlight" aria-hidden="true" />
+        {/* ── LEFT: Content ── */}
+        <div className="hero__content">
 
           <div className="hero__badge">
             <span className="hero__badge-dot" />
@@ -98,51 +126,65 @@ export default function Hero({ onTryClick }: HeroProps): JSX.Element {
 
           {/* Glassmorphism panel */}
           <div className="hero__glass-panel">
-            <svg
-              className="hero__visual-svg"
-              viewBox="0 0 480 480"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              {/* Grid lines */}
-              {[80, 160, 240, 320, 400].map((x) => (
-                <line key={`v${x}`} className="hero-grid-line" x1={x} y1="0" x2={x} y2="480" />
-              ))}
-              {[80, 160, 240, 320, 400].map((y) => (
-                <line key={`h${y}`} className="hero-grid-line" x1="0" y1={y} x2="480" y2={y} />
-              ))}
+            <div className="hero-bot">
+              {/* Bot Header */}
+              <div className="hero-bot__header">
+                <div className="hero-bot__avatar">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" />
+                    <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+                    <line x1="12" x2="12" y1="19" y2="22" />
+                  </svg>
+                  <span className="hero-bot__status" />
+                </div>
+                <div className="hero-bot__header-info">
+                  <span className="hero-bot__name">RegAI Compliance Bot</span>
+                  <span className="hero-bot__status-text">Online • Grounded in source docs</span>
+                </div>
+              </div>
 
-              {/* Outer circle */}
-              <circle className="hero-circle" cx="240" cy="240" r="180" />
-              {/* Rotating dashed circle */}
-              <circle className="hero-circle hero-circle--inner" cx="240" cy="240" r="120" />
-              {/* Inner solid circle */}
-              <circle className="hero-circle" cx="240" cy="240" r="60" />
+              {/* Bot Chat Area */}
+              <div className="hero-bot__chat">
+                {/* User Message */}
+                <div className={`hero-bot__msg hero-bot__msg--user ${chatStep >= 0 ? "visible" : ""}`}>
+                  <div className="hero-bot__msg-bubble">
+                    Does our marketing draft comply with GDPR data retention limits?
+                  </div>
+                </div>
 
-              {/* Document card — center */}
-              <rect className="hero-doc-card" x="180" y="195" width="120" height="90" rx="6" />
-              <line className="hero-doc-line" x1="198" y1="218" x2="282" y2="218" />
-              <line className="hero-doc-line--short" x1="198" y1="232" x2="260" y2="232" />
-              <line className="hero-doc-line--short" x1="198" y1="246" x2="272" y2="246" />
-              <line className="hero-doc-line--short" x1="198" y1="260" x2="250" y2="260" />
+                {/* Grounded Retrieval Step */}
+                {chatStep >= 1 && (
+                  <div className="hero-bot__retrieval animate-fade-in">
+                    <span className="hero-bot__retrieval-icon">🔍</span>
+                    <span className="hero-bot__retrieval-text">Searching gdpr_regulation.pdf...</span>
+                  </div>
+                )}
 
-              {/* Connector dots */}
-              <circle className="hero-node" cx="240" cy="120" r="5" />
-              <circle className="hero-node" cx="360" cy="240" r="5" />
-              <circle className="hero-node" cx="240" cy="360" r="5" />
-              <circle className="hero-node" cx="120" cy="240" r="5" />
+                {/* Typing Indicator (shown in step 2, hidden in step 3) */}
+                {chatStep === 2 && (
+                  <div className="hero-bot__msg hero-bot__msg--bot animate-fade-in">
+                    <div className="hero-bot__msg-bubble hero-bot__msg-bubble--typing">
+                      <div className="typing-dot" />
+                      <div className="typing-dot" />
+                      <div className="typing-dot" />
+                    </div>
+                  </div>
+                )}
 
-              {/* Connector lines from doc to dots */}
-              <line className="hero-connector" x1="240" y1="195" x2="240" y2="125" />
-              <line className="hero-connector" x1="300" y1="240" x2="355" y2="240" />
-              <line className="hero-connector" x1="240" y1="285" x2="240" y2="355" />
-              <line className="hero-connector" x1="180" y1="240" x2="125" y2="240" />
-
-              {/* Small corner dots */}
-              <circle className="hero-node--muted" cx="80" cy="80" r="3" fill="var(--border-default)" />
-              <circle className="hero-node--muted" cx="400" cy="80" r="3" fill="var(--border-default)" />
-              <circle className="hero-node--muted" cx="80" cy="400" r="3" fill="var(--border-default)" />
-              <circle className="hero-node--muted" cx="400" cy="400" r="3" fill="var(--border-default)" />
-            </svg>
+                {/* Bot Message (shown in step 3) */}
+                {chatStep >= 3 && (
+                  <div className="hero-bot__msg hero-bot__msg--bot animate-slide-up">
+                    <div className="hero-bot__msg-bubble">
+                      <p>Under <strong>GDPR Article 5(1)(e)</strong>, personal data must be stored for no longer than necessary.</p>
+                      <p>Your draft policy of 5 years is compliant, provided you have explicit consent.</p>
+                      <div className="hero-bot__citation">
+                        <span className="hero-bot__citation-tag">GDPR Art. 5(1)(e) • Page 12</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
 

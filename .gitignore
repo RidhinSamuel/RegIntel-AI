@@ -383,3 +383,11 @@ hero_options.md
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Ignore backend storage files
+/backend/app.log
+/backend/app/storage/*
+!/backend/app/storage/.gitkeep
+
+# Ignore Qdrant vector database permanent storage
+/backend/qdrant_storage/

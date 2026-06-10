@@ -1,7 +1,10 @@
 import os
 import shutil
+import uuid
 from fastapi import UploadFile
-from app.core.config import STORAGE
+from app.core.config import STORAGE, logger
+from app.services.queue import rq_queue
+from app.services.worker import run_document_injection
 
 
 def save_document(file: UploadFile):
@@ -20,10 +23,21 @@ def save_document(file: UploadFile):
     if extension not in (".pdf"):  # ,'doc','docs'
         raise ValueError("The Given File is not 'pdf' ")
     os.makedirs(STORAGE, exist_ok=True)
-    file_path = f"{STORAGE}/{file.filename}"
+    unique_filename = f"{uuid.uuid4()}_{file.filename}"
+    file_path = f"{STORAGE}/{unique_filename}"
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
-    return "File Uploaded successfully"
+    logger.info(f"Added the Document to the local directory {file_path}")
+    return file_path,unique_filename
+
+def process_uploaded_files(files: list[UploadFile]):
+    processed_files=[]
+    for file in files:
+        file_path, file_name = save_document(file)
+        rq_queue.enqueue(run_document_injection,file_path, file_name)
+        logger.info(f"{file_name} has been added to the worker Queue")
+        processed_files.append(file_name)
+    return f"files {processed_files}uploaded successfully"
 
 
 if __name__ == "__main__":

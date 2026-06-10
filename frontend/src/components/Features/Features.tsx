@@ -141,7 +141,7 @@ export default function Features(): JSX.Element {
         <div className="features__scroll-wrapper">
           <ScrollStack
             useWindowScroll={true}
-            itemDistance={120}
+            itemDistance={48}
             itemScale={0.04}
             itemStackDistance={20}
             stackPosition="15%"

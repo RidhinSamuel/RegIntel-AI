@@ -1,5 +1,5 @@
 /* =========================================================
-   Navbar — co-located styles
+   Navbar — co-located styles (Glassmorphism)
    ========================================================= */
 .navbar {
   position: fixed;
@@ -12,13 +12,26 @@
   justify-content: space-between;
   padding: 0 48px;
   height: 64px;
-  background-color: var(--bg-primary);
-  border-bottom: 1px solid var(--border-subtle);
-  transition: background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.2s ease;
+  background: rgba(255, 255, 255, 0.55);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.2s ease, backdrop-filter 0.4s ease;
+}
+
+[data-theme="dark"] .navbar {
+  background: rgba(12, 12, 12, 0.6);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .navbar--scrolled {
   box-shadow: var(--shadow-sm);
+  background: rgba(255, 255, 255, 0.72);
+}
+
+[data-theme="dark"] .navbar--scrolled {
+  background: rgba(12, 12, 12, 0.78);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 .navbar__logo {
@@ -39,11 +52,11 @@
 
 .navbar__logo-spark {
   color: var(--blue);
-  font-size: 0.95rem;
+  font-size: 1.3rem;
   vertical-align: top;
   position: relative;
-  top: -2px;
-  margin-left: 2px;
+  top: -3px;
+  margin-left: 3px;
   display: inline-block;
   animation: spark-pop 2.5s ease-in-out infinite;
 }
