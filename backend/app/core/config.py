@@ -4,7 +4,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 load_dotenv()
 logger = logging.getLogger("uvicorn.error")
-BACKEND_ROOT = Path(__file__).resolve().parent.parent.parent
+BACKEND_ROOT = Path(__file__).resolve().parent.parent
 STORAGE = str(BACKEND_ROOT / os.getenv("STORAGE"))
 logger.info(f"BACKEND ROOT : {BACKEND_ROOT}")
 logger.info(f"STORAGE : {STORAGE}")

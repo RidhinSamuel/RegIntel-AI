@@ -96,7 +96,7 @@ class MultiDocumentLoader:
         After successful upload, the local temporary file is removed.
         """
         print("Uploading chunks and embeddings to Qdrant...")
-        vector_store = QdrantVectorStore.from_documents(
+        QdrantVectorStore.from_documents(
             documents=chunks,
             embedding=self.embedding_model,
             url=os.environ["QDRANT"],
