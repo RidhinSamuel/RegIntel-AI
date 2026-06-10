@@ -34,10 +34,10 @@ def process_uploaded_files(files: list[UploadFile]):
     processed_files=[]
     for file in files:
         file_path, file_name = save_document(file)
-        rq_queue.enqueue(run_document_injection,file_path, file_name)
+        rq_queue.enqueue(run_document_injection, file_path, file_name, job_timeout=600)
         logger.info(f"{file_name} has been added to the worker Queue")
         processed_files.append(file_name)
-    return f"files {processed_files}uploaded successfully"
+    return "Files Uploaded Successfully"
 
 
 if __name__ == "__main__":

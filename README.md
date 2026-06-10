@@ -50,3 +50,5 @@ backend/
 ├── .env
 ├── requirements.txt
 └── README.md
+
+uv run rq worker -w rq.SimpleWorker
