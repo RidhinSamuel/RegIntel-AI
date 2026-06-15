@@ -2,7 +2,12 @@ import type { JSX } from "react";
 import ScrollStack, { ScrollStackItem } from "./ScrollStack";
 import "./Features.css";
 
-// 1. Upload Visual Component (Step 1)
+/**
+ * UploadVisual Component.
+ * Displays a mock PDF file upload progress card decoration for Step 1.
+ *
+ * @returns {JSX.Element} The rendered mock upload graphic.
+ */
 function UploadVisual(): JSX.Element {
   return (
     <div className="visual-container upload-visual">
@@ -29,7 +34,12 @@ function UploadVisual(): JSX.Element {
   );
 }
 
-// 2. Ask Visual Component (Step 2)
+/**
+ * AskVisual Component.
+ * Displays a mock user message bubbles showing a natural language query for Step 2.
+ *
+ * @returns {JSX.Element} The rendered mock query bubble graphic.
+ */
 function AskVisual(): JSX.Element {
   return (
     <div className="visual-container ask-visual">
@@ -55,7 +65,12 @@ function AskVisual(): JSX.Element {
   );
 }
 
-// 3. Answer Visual Component (Step 3)
+/**
+ * AnswerVisual Component.
+ * Displays a mock document layout with a specific highlighted line of text and a page citation tag for Step 3.
+ *
+ * @returns {JSX.Element} The rendered mock citation graphic.
+ */
 function AnswerVisual(): JSX.Element {
   return (
     <div className="visual-container answer-visual">
@@ -94,7 +109,16 @@ function AnswerVisual(): JSX.Element {
   );
 }
 
-const FEATURES = [
+/** Structure of a single regulatory feature block. */
+interface FeatureData {
+  step: string;
+  title: string;
+  description: string;
+  color: string;
+  darkColor: string;
+}
+
+const FEATURES: FeatureData[] = [
   {
     step: "Step 01",
     title: "Upload Your PDF",
@@ -121,6 +145,13 @@ const FEATURES = [
   },
 ];
 
+/**
+ * Features Section Component.
+ * Contains a descriptive header and a scrollable card deck (ScrollStack) showing
+ * the workflow process steps of the RegAI platform.
+ *
+ * @returns {JSX.Element} The rendered features section.
+ */
 export default function Features(): JSX.Element {
   return (
     <section className="features" id="features" aria-labelledby="features-title">
@@ -179,3 +210,4 @@ export default function Features(): JSX.Element {
     </section>
   );
 }
+

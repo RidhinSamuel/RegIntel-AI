@@ -2,17 +2,36 @@ import { useState, useRef, useCallback, type JSX, type DragEvent, type KeyboardE
 import { uploadDocument } from "../../api/uploadApi";
 import "./ChatModal.css";
 
+/**
+ * Interface representing a message in the RAG chat history.
+ */
 interface Message {
+  /** Unique message identifier (UUID). */
   id: string;
+  /** Role of the sender ('user' or 'ai'). */
   role: "user" | "ai";
+  /** Text content of the message. */
   content: string;
 }
 
+/**
+ * Properties for the ChatModal component.
+ */
 interface ChatModalProps {
+  /** Flag representing if the modal is visible. */
   isOpen: boolean;
+  /** Callback function triggered to close the modal. */
   onClose: () => void;
 }
 
+/**
+ * ChatModal Component.
+ * Renders an overlay dialog containing the regulatory document uploader in a sidebar
+ * and an interactive chat interface to submit semantic questions and view grounding responses.
+ *
+ * @param {ChatModalProps} props - The component props.
+ * @returns {JSX.Element | null} The rendered modal overlay, or null if closed.
+ */
 export default function ChatModal({ isOpen, onClose }: ChatModalProps): JSX.Element | null {
   const [file, setFile] = useState<File | null>(null);
   const [isDragOver, setIsDragOver] = useState(false);

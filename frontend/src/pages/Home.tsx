@@ -6,12 +6,23 @@ import CTASection from "../components/CTASection/CTASection";
 import ChatModal from "../components/ChatModal/ChatModal";
 import { useTheme } from "../hooks/useTheme";
 
+/**
+ * Home Page Component.
+ * Acts as the primary landing page displaying the Navbar, Hero section,
+ * Features list, CTA banner, and managing state for the RAG Chat modal.
+ *
+ * @returns {JSX.Element} The rendered home page view.
+ */
 export default function Home(): JSX.Element {
   const { isDark, toggleTheme } = useTheme();
-  const [isChatOpen, setIsChatOpen] = useState(false);
+  // State to manage visibility of the chatbot modal
+  const [isChatOpen, setIsChatOpen] = useState<boolean>(false);
 
-  const openChat = () => setIsChatOpen(true);
-  const closeChat = () => setIsChatOpen(false);
+  /** Opens the interactive RAG chat modal. */
+  const openChat = (): void => setIsChatOpen(true);
+
+  /** Closes the interactive RAG chat modal. */
+  const closeChat = (): void => setIsChatOpen(false);
 
   return (
     <>

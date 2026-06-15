@@ -1,10 +1,22 @@
 import { useRef, useCallback, useEffect, useState, type JSX } from "react";
 import "./Hero.css";
 
+/**
+ * Properties for the Hero component.
+ */
 interface HeroProps {
+  /** Callback function triggered when the user clicks the main landing CTA. */
   onTryClick: () => void;
 }
 
+/**
+ * Hero Component.
+ * The primary showcase header section containing regulatory branding, RAG highlights,
+ * and a mock visual chatbot demo demonstrating document indexing & questioning steps.
+ *
+ * @param {HeroProps} props - The component props.
+ * @returns {JSX.Element} The rendered Hero section.
+ */
 export default function Hero({ onTryClick }: HeroProps): JSX.Element {
   const heroRef = useRef<HTMLElement>(null);
   const [chatStep, setChatStep] = useState(0);

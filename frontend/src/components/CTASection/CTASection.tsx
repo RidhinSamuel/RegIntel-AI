@@ -2,10 +2,23 @@ import { useRef, useEffect, useState, type JSX } from "react";
 import BlurText from "../BlurText/BlurText";
 import "./CTASection.css";
 
+/**
+ * Properties for the CTASection component.
+ */
 interface CTASectionProps {
+  /** Callback function triggered when the user clicks the final landing page Try CTA button. */
   onTryClick: () => void;
 }
 
+/**
+ * CTASection Component.
+ * Renders the bottom Call-To-Action panel of the landing page.
+ * Uses an IntersectionObserver to trigger entry animations and reveals a
+ * mock RAG pipeline visual showcasing parsing steps.
+ *
+ * @param {CTASectionProps} props - The component props.
+ * @returns {JSX.Element} The rendered CTA section.
+ */
 export default function CTASection({ onTryClick }: CTASectionProps): JSX.Element {
   const sectionRef = useRef<HTMLElement>(null);
   const [hasStarted, setHasStarted] = useState(false);

@@ -1,17 +1,37 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 
+/**
+ * Props accepted by the BlurText component.
+ */
 type BlurTextProps = {
+  /** The text string to animate. */
   text?: string;
+  /** Staggered delay (in ms) per animated segment. */
   delay?: number;
+  /** Custom CSS class names applied to the container paragraph. */
   className?: string;
+  /** Target text separation style (split by 'words' or 'letters'). */
   animateBy?: 'words' | 'letters';
+  /** Start direction for the text slide animation. */
   direction?: 'top' | 'bottom';
+  /** IntersectionObserver threshold trigger offset ratio. */
   threshold?: number;
+  /** IntersectionObserver bounding box root offset string. */
   rootMargin?: string;
+  /** Optional callback fired when the entire sequence animation completes. */
   onAnimationComplete?: () => void;
+  /** Time duration (in seconds) for a single character/word animation transition. */
   stepDuration?: number;
 };
 
+/**
+ * BlurText Component.
+ * Animates text rendering by splitting it into words or characters,
+ * applying staggered fade-in, translateY offsets, and blur-out transition effects when scrolled into view.
+ *
+ * @param {BlurTextProps} props - The component props.
+ * @returns {JSX.Element} The animated text component.
+ */
 const BlurText: React.FC<BlurTextProps> = ({
   text = '',
   delay = 200,

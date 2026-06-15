@@ -1,14 +1,28 @@
 import { useState, useEffect, type JSX } from "react";
 import "./Navbar.css";
 
+/**
+ * Properties for the Navbar component.
+ */
 interface NavbarProps {
+  /** Flag representing if dark mode is currently active. */
   isDark: boolean;
+  /** Callback function triggered when toggling the theme. */
   onToggleTheme: () => void;
+  /** Callback function triggered when the primary CTA button is clicked. */
   onTryClick: () => void;
 }
 
+/**
+ * Navbar Component.
+ * Renders the top navigation bar with theme switching toggle and Try CTA button.
+ * Observes page scroll offset to apply frosted glass styling.
+ *
+ * @param {NavbarProps} props - The component props.
+ * @returns {JSX.Element} The rendered Navbar.
+ */
 export default function Navbar({ isDark, onToggleTheme, onTryClick }: NavbarProps): JSX.Element {
-  const [scrolled, setScrolled] = useState(false);
+  const [scrolled, setScrolled] = useState<boolean>(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -64,3 +78,4 @@ export default function Navbar({ isDark, onToggleTheme, onTryClick }: NavbarProp
     </nav>
   );
 }
+

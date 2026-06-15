@@ -1,26 +1,41 @@
+"""Configuration module for the RegIntel-AI application.
+
+This module loads environment variables, defines filesystem paths, and sets up
+the application-wide logger including stream and file handlers.
+"""
+
 import os
 import logging
 from pathlib import Path
 from dotenv import load_dotenv
+
+# Load environment variables from a .env file
 load_dotenv()
-logger = logging.getLogger("uvicorn.error")
-BACKEND_ROOT = Path(__file__).resolve().parent.parent
-STORAGE = str(BACKEND_ROOT / os.getenv("STORAGE"))
+
+# Pre-configure logger for initial uvicorn errors
+logger: logging.Logger = logging.getLogger("uvicorn.error")
+
+# Paths configuration
+BACKEND_ROOT: Path = Path(__file__).resolve().parent.parent
+STORAGE: str = str(BACKEND_ROOT / os.getenv("STORAGE"))
+
 logger.info(f"BACKEND ROOT : {BACKEND_ROOT}")
 logger.info(f"STORAGE : {STORAGE}")
 
-# Get the already-configured Uvicorn logger
-# 1. Setup the logger
+# Set up the main application logger
 logger = logging.getLogger("regintel_app")
 logger.setLevel(logging.INFO)
-# 2. Add Console Handler (prints to whichever terminal is running the code)
-console_handler = logging.StreamHandler()
+
+# Add Console Handler (prints to whichever terminal is running the code)
+console_handler: logging.StreamHandler = logging.StreamHandler()
 console_handler.setFormatter(logging.Formatter(" %(levelname)s:     %(message)s"))
 logger.addHandler(console_handler)
-# 3. Add File Handler (writes to app.log for both FastAPI and Worker)
-file_handler = logging.FileHandler(BACKEND_ROOT / "app.log")
+
+# Add File Handler (writes to app.log for both FastAPI and Worker)
+file_handler: logging.FileHandler = logging.FileHandler(BACKEND_ROOT / "app.log")
 file_handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
 logger.addHandler(file_handler)
+
 # Use it in your endpoints:
 # logger.info("This is a custom message!")
 # logger.warning("This is a warning message!")

@@ -1,28 +1,39 @@
 import { useState, type JSX } from "react";
-
 import { uploadDocument } from "../../api/uploadApi";
 
+/**
+ * UploadForm Component.
+ * Renders a simple localized card overlay providing file input select control
+ * and upload submit button with loading/status messages.
+ *
+ * @returns {JSX.Element} The rendered UploadForm.
+ */
 function UploadForm(): JSX.Element {
+  // Local state for the selected file object
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
+  // Local state representing the current uploading API call status
   const [loading, setLoading] = useState<boolean>(false);
 
+  // Local state storing status/error feedback message strings
   const [message, setMessage] = useState<string>("");
 
+  /**
+   * Submits the selected file to the document upload endpoint.
+   * Updates loading and feedback messages appropriately.
+   *
+   * @returns {Promise<void>} A promise resolving when the request finishes.
+   */
   async function handleUpload(): Promise<void> {
     if (!selectedFile) {
       setMessage("Please select a file");
-
       return;
     }
 
     try {
       setLoading(true);
-
       setMessage("");
-
       const response = await uploadDocument(selectedFile);
-
       setMessage(response.message);
     } catch (error) {
       if (error instanceof Error) {
@@ -113,3 +124,4 @@ function UploadForm(): JSX.Element {
 }
 
 export default UploadForm;
+
